@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - JekooMarket</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" th:href="@{/css/login.css}"> <!-- Corrigido o caminho -->
 </head>
 <body>
 <div class="container">
     <h2>Entrar no JekooMarket</h2>
-    <form method="post" action="/login">
+    <form method="post" th:action="@{/login}">
         <input type="email" name="username" placeholder="Email" required>
         <input type="password" name="password" placeholder="Senha" required>
         <button type="submit">Entrar</button>
     </form>
     <div class="link">
-        <p>Não tem uma conta? <a href="/register">Cadastre-se</a></p>
+        <p>Não tem uma conta? <a th:href="@{/register}">Cadastre-se</a></p>
     </div>
 </div>
 </body>

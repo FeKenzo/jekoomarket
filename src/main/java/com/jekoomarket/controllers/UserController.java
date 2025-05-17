@@ -1,9 +1,9 @@
 package com.jekoomarket.controllers;
 
 import com.jekoomarket.models.User;
-import com.jekoomarket.repositories.UserRepository;
+import com.jekoomarket.services.UserService;
+import com.jekoomarket.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -11,24 +11,30 @@ import org.springframework.ui.Model;
 @Controller
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
+    }
 
+    // Exibe o formulário de cadastro
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new User());
-        return "register";
+        return "register"; // templates/register.html
     }
 
+    // Processa o formulário e salva o usuário
     @PostMapping("/register")
     public String processRegister(@ModelAttribute User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        userServiceImpl.save(user);
         return "redirect:/login";
     }
 
-
+    // Exibe a tela de login
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "login"; // templates/login.html
+    }
 }

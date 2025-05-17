@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - JekooMarket</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/register.css">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
 <div class="container">
     <h2>Cadastre-se no JekooMarket</h2>
-    <form method="post" action="/register">
-        <input type="text" name="name" placeholder="Nome completo" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Senha" required>
+    <form method="post" th:action="@{/register}" th:object="${user}">
+        <input type="text" th:field="*{name}" placeholder="Nome completo" required>
+        <input type="email" th:field="*{email}" placeholder="Email" required>
+        <input type="password" th:field="*{password}" placeholder="Senha" required>
         <button type="submit">Cadastrar</button>
     </form>
     <div class="link">
-        <p>Já possui conta? <a href="/login">Entrar</a></p>
+        <p>Já possui conta? <a th:href="@{/login}">Entrar</a></p>
     </div>
 </div>
 </body>
