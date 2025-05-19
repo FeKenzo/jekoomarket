@@ -10,6 +10,11 @@
 <body>
 <div class="container">
     <h2>Entrar no JekooMarket</h2>
+
+    <div th:if="${loginError}" class="error-message">
+        <p th:text="${loginError}"></p>
+    </div>
+
     <form method="post" th:action="@{/login}">
         <input type="email" name="username" placeholder="Email" required>
         <input type="password" name="password" placeholder="Senha" required>

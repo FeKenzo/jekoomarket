@@ -28,13 +28,23 @@ public class UserController {
     // Processa o formulário e salva o usuário
     @PostMapping("/register")
     public String processRegister(@ModelAttribute User user) {
+        user.setRole("USER");
         userServiceImpl.save(user);
         return "redirect:/login";
     }
 
     // Exibe a tela de login
     @GetMapping("/login")
-    public String showLoginPage() {
-        return "login"; // templates/login.html
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        Model model) {
+        if (error != null) {
+            model.addAttribute("loginError", "Email ou senha inválidos.");
+        }
+        return "login"; // seu template HTML de login
+    }
+
+    @GetMapping("/user")
+    public String userArea() {
+        return "user"; // Retorna user.html
     }
 }

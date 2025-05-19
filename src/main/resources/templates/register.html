@@ -11,7 +11,6 @@
 <div class="container">
     <h2>Cadastre-se no JekooMarket</h2>
     <form method="post" th:action="@{/register}" th:object="${user}">
-        <input type="text" th:field="*{name}" placeholder="Nome completo" required>
         <input type="email" th:field="*{email}" placeholder="Email" required>
         <input type="password" th:field="*{password}" placeholder="Senha" required>
         <button type="submit">Cadastrar</button>
