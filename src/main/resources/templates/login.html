@@ -5,14 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - JekooMarket</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/login.css}"> <!-- Corrigido o caminho -->
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 <body>
 <div class="container">
     <h2>Entrar no JekooMarket</h2>
 
-    <div th:if="${loginError}" class="error-message">
-        <p th:text="${loginError}"></p>
+    <!-- Mensagens de erro ou sucesso -->
+    <div th:if="${param.error}" class="message error">
+        Email ou senha incorretos. Tente novamente.
+    </div>
+    <div th:if="${param.logout}" class="message success">
+        Você saiu com sucesso.
     </div>
 
     <form method="post" th:action="@{/login}">
@@ -20,6 +24,7 @@
         <input type="password" name="password" placeholder="Senha" required>
         <button type="submit">Entrar</button>
     </form>
+
     <div class="link">
         <p>Não tem uma conta? <a th:href="@{/register}">Cadastre-se</a></p>
     </div>

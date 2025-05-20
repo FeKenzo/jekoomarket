@@ -1,18 +1,52 @@
 <!DOCTYPE html>
-<html>
-<head><title>Lista de Usuários</title></head>
-<body>
-<h1>Usuários Cadastrados</h1>
-<table border="1">
-  <tr><th>ID</th><th>Email</th><th>Ações</th></tr>
-  <tr th:each="user : ${users}">
-    <td th:text="${user.id}"></td>
-    <td th:text="${user.email}"></td>
-    <td>
-      <a th:href="@{/admin/users/edit/{id}(id=${user.id})}">Editar</a>
-      <a th:href="@{/admin/users/delete/{id}(id=${user.id})}" onclick="return confirm('Deseja excluir?')">Excluir</a>
-    </td>
-  </tr>
-</table>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel do Administrador</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-panel">
+<header class="header">
+  <h1>Administração de Usuários</h1>
+  <nav class="nav">
+    <a href="/logout">Sair</a>
+  </nav>
+</header>
+<main class="main">
+  <section>
+    <h2>Lista de Usuários</h2>
+    <table class="user-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Função</th>
+        <th>Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="user : ${usuarios}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.role}"></td>
+        <td>
+          <a th:href="@{'/admin/editar/' + ${user.id}}">Editar</a> |
+          <a th:href="@{'/admin/deletar/' + ${user.id}}" onclick="return confirm('Deseja excluir?')">Excluir</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <h3>Adicionar Novo Usuário</h3>
+    <form th:action="@{/admin/adicionar}" method="post" class="user-form">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="password" placeholder="Senha" required>
+      <select name="role">
+        <option value="ROLE_USER">Usuário</option>
+        <option value="ROLE_ADMIN">Administrador</option>
+      </select>
+      <button type="submit">Adicionar</button>
+    </form>
+  </section>
+</main>
 </body>
 </html>
