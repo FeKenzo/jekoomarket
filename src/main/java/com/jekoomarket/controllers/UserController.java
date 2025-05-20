@@ -2,7 +2,6 @@ package com.jekoomarket.controllers;
 
 import com.jekoomarket.models.User;
 import com.jekoomarket.services.UserService;
-import com.jekoomarket.services.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -11,40 +10,43 @@ import org.springframework.ui.Model;
 @Controller
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     @Autowired
-    public UserController(UserServiceImpl userServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    // Exibe o formulário de cadastro
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("user", new User());
-        return "register"; // templates/register.html
+        return "register";
     }
 
-    // Processa o formulário e salva o usuário
     @PostMapping("/register")
-    public String processRegister(@ModelAttribute User user) {
+    public String processRegister(@ModelAttribute User user, Model model) {
+        if (userService.existsByEmail(user.getEmail())) {
+            model.addAttribute("user", user); // para manter os dados do formulário
+            model.addAttribute("error", "Este e-mail já está cadastrado.");
+            return "register";
+        }
+
         user.setRole("USER");
-        userServiceImpl.save(user);
+        userService.save(user);
         return "redirect:/login";
     }
 
-    // Exibe a tela de login
     @GetMapping("/login")
     public String login(@RequestParam(value = "error", required = false) String error,
                         Model model) {
         if (error != null) {
             model.addAttribute("loginError", "Email ou senha inválidos.");
         }
-        return "login"; // seu template HTML de login
+        return "login";
     }
 
     @GetMapping("/user")
     public String userArea() {
-        return "user"; // Retorna user.html
+        return "user";
     }
 }

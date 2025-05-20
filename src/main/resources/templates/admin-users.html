@@ -42,6 +42,8 @@
       </table>
 
       <h3 style="margin-top: 40px;">Adicionar Novo Usuário</h3>
+      <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
       <form th:action="@{/admin/users/add}" method="post" class="user-form">
         <input type="email" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Senha" required>

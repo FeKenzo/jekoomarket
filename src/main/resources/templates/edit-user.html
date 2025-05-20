@@ -8,6 +8,8 @@
 <body>
 <div class="container">
     <h1>Editar Usuário</h1>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
     <form th:action="@{/admin/users/update}" th:object="${user}" method="post" class="user-form">
         <input type="hidden" th:field="*{id}" />
 
