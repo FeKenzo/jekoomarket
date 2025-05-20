@@ -7,46 +7,52 @@
 </head>
 <body class="admin-panel">
 <header class="header">
-  <h1>Administração de Usuários</h1>
-  <nav class="nav">
-    <a href="/logout">Sair</a>
-  </nav>
+  <div class="container">
+    <h1>Administração de Usuários</h1>
+    <nav class="nav">
+      <a href="/logout" class="admin-button">Sair</a>
+    </nav>
+  </div>
 </header>
+
 <main class="main">
-  <section>
-    <h2>Lista de Usuários</h2>
-    <table class="user-table">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Função</th>
-        <th>Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="user : ${usuarios}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.role}"></td>
-        <td>
-          <a th:href="@{'/admin/editar/' + ${user.id}}">Editar</a> |
-          <a th:href="@{'/admin/deletar/' + ${user.id}}" onclick="return confirm('Deseja excluir?')">Excluir</a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <h3>Adicionar Novo Usuário</h3>
-    <form th:action="@{/admin/adicionar}" method="post" class="user-form">
-      <input type="email" name="email" placeholder="Email" required>
-      <input type="password" name="password" placeholder="Senha" required>
-      <select name="role">
-        <option value="ROLE_USER">Usuário</option>
-        <option value="ROLE_ADMIN">Administrador</option>
-      </select>
-      <button type="submit">Adicionar</button>
-    </form>
-  </section>
+  <div class="container">
+    <section>
+      <h2>Lista de Usuários</h2>
+      <table class="user-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Função</th>
+          <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+          <td th:text="${user.id}"></td>
+          <td th:text="${user.email}"></td>
+          <td th:text="${user.role}"></td>
+          <td>
+            <a th:href="@{'/admin/users/edit/' + ${user.id}}">Editar</a> |
+            <a th:href="@{'/admin/users/delete/' + ${user.id}}" onclick="return confirm('Deseja excluir?')">Excluir</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
+      <h3 style="margin-top: 40px;">Adicionar Novo Usuário</h3>
+      <form th:action="@{/admin/users/add}" method="post" class="user-form">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Senha" required>
+        <select name="role">
+          <option value="USER">Usuário</option>
+          <option value="ADMIN">Administrador</option>
+        </select>
+        <input type="submit" value="Adicionar">
+      </form>
+    </section>
+  </div>
 </main>
 </body>
 </html>

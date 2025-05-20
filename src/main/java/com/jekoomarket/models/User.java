@@ -11,9 +11,11 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String email;
     private String password;
 
@@ -31,31 +33,30 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    public boolean isEnabled() { return true; }
 
     public Long getId() { return id; }
+
     public void setId(Long id) { this.id = id; }
+
     public String getEmail() { return email; }
+
     public void setEmail(String email) { this.email = email; }
+
     public String getPassword() { return password; }
+
     public void setPassword(String password) { this.password = password; }
+
     public String getRole() { return role; }
+
     public void setRole(String role) { this.role = role; }
 }
