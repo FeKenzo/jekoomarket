@@ -1,8 +1,11 @@
 package com.jekoomarket.config;
 
 import com.jekoomarket.services.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -11,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -48,7 +54,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/register", "/login", "/css/**", "/js/**", "/h2-console/**").permitAll()
                         .requestMatchers("/admin", "/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user", "/user/**").hasRole("USER")
+                        .requestMatchers("/user", "/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -73,9 +79,24 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .exceptionHandling(ex -> ex
-                        .accessDeniedPage("/custom-error")
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.sendRedirect("/access-denied");
+                        })
+                        // Isso aqui cuida de redirecionar o não autenticado para /login:
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.sendRedirect("/login");
+                        })
                 );
-
         return http.build();
+    }
+
+    @Bean
+    public AccessDeniedHandler customAccessDeniedHandler() {
+        return new AccessDeniedHandler() {
+            @Override
+            public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException ex) throws IOException {
+                response.sendRedirect("/access-denied");
+            }
+        };
     }
 }

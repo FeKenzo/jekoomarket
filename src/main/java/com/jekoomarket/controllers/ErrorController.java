@@ -18,6 +18,6 @@ public class ErrorController {
                 return "access-refused"; // templates/access-refused.html
             }
         }
-        return "error";
+        return "general";
     }
 }
