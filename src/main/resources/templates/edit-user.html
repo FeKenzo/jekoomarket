@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Usuário</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Editar Usuário</h1>
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+    <form th:action="@{/admin/users/update}" th:object="${user}" method="post" class="user-form">
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Email:</label>
+        <input type="email" th:field="*{email}" required />
+
+        <label>Senha (deixe em branco para manter a atual):</label>
+        <input type="password" name="password" placeholder="Nova senha (opcional)" />
+
+        <label>Função:</label>
+        <select th:field="*{role}">
+            <option value="USER">Usuário</option>
+            <option value="ADMIN">Administrador</option>
+        </select>
+
+        <input type="submit" value="Salvar Alterações" />
+    </form>
+
+    <div style="margin-top: 20px;">
+        <a href="/admin/users" class="admin-button">← Voltar</a>
+    </div>
+</div>
+</body>
+</html>
