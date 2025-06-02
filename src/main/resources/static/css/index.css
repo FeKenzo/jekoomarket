@@ -1,0 +1,155 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Torna o body um flex container vertical */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Permite que o conteúdo principal cresça para ocupar o espaço restante */
+.main {
+    flex: 1;
+}
+
+
+/* Cabeçalho */
+.header {
+    background-color: #2e7d32;
+    color: white;
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Navegação */
+.nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 20px;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.nav a:hover {
+    color: #c8e6c9;
+}
+
+/* Conteúdo principal */
+.main {
+    padding: 60px 40px;
+    text-align: center;
+    background-image: url('../../img/ecobg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-blend-mode: soft-light;
+    background-color: #f0fdf4;
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    color: #1b5e20;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2em;
+    color: #4e664f;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background-color: #66bb6a;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #388e3c;
+}
+
+/* Rodapé */
+.footer {
+    background-color: #2e7d32;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9em;
+    margin-top: 60px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .nav {
+        margin-top: 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav a {
+        margin: 0;
+        padding: 10px;
+        background-color: #388e3c;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .main {
+        padding: 40px 20px;
+    }
+
+    .hero h2 {
+        font-size: 2em;
+    }
+
+    .hero p {
+        font-size: 1em;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h2 {
+        font-size: 1.6em;
+    }
+
+    .hero p {
+        font-size: 0.9em;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 12px;
+    }
+}
