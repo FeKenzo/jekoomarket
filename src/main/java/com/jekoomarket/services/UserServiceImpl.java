@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         // Se a senha não estiver criptografada (não começa com $), criptografa
-        if (!user.getPassword().startsWith("$2a$")) {
+        if (user.getPassword() != null && !user.getPassword().startsWith("$2a$")) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         userRepository.save(user);
@@ -53,5 +53,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public long countAllUsers() { // Implementation of new method
+        return userRepository.count();
     }
 }
