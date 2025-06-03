@@ -10,4 +10,5 @@ public interface ProductService {
     List<Product> search(String query);
     List<Product> findByUser(Long userId);
     Optional<Product> findById(Long id);
+    long countAllProducts(); // New method
 }
