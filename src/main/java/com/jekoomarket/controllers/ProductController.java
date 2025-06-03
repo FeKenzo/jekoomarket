@@ -4,10 +4,12 @@ import com.jekoomarket.models.Product;
 import com.jekoomarket.models.User;
 import com.jekoomarket.services.ProductService;
 import com.jekoomarket.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal; // IMPORTANTE: Adicionar este import
-import org.springframework.security.core.userdetails.UserDetails;      // IMPORTANTE: Adicionar este import
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,7 @@ import java.util.UUID;
 @Controller
 public class ProductController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     public static final String UPLOAD_DIR = "product-images";
 
     @Autowired
@@ -36,18 +39,22 @@ public class ProductController {
     private UserService userService;
 
     @GetMapping("/products/new")
-    public String showAnnounceForm(Model model, @AuthenticationPrincipal UserDetails currentUser) { // Adicionado @AuthenticationPrincipal
+    public String showAnnounceForm(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         model.addAttribute("product", new Product());
 
-        // Adicionando as informações de login ao modelo para o cabeçalho
+        // Adicionando atributos para o cabeçalho
         model.addAttribute("isUserLoggedIn", currentUser != null);
+        boolean isAdmin = false;
         if (currentUser != null) {
             model.addAttribute("username", currentUser.getUsername());
+            // Verifica se o usuário tem a role ADMIN
+            isAdmin = currentUser.getAuthorities().stream()
+                    .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
         } else {
-            // Como /products/new é uma rota autenticada, currentUser não deveria ser null.
-            // Mas, por segurança, para o template:
             model.addAttribute("username", "");
         }
+        model.addAttribute("isAdmin", isAdmin);
+
         return "announce-product";
     }
 
@@ -56,13 +63,14 @@ public class ProductController {
                               @RequestParam("description") String description,
                               @RequestParam("price") Double price,
                               @RequestParam("imageFile") MultipartFile imageFile,
-                              Authentication authentication, // Mantido para pegar o usuário que está salvando
+                              Authentication authentication,
                               RedirectAttributes redirectAttributes) {
 
-        // Esta lógica para pegar o User que está salvando o produto está correta.
-        // Não usamos @AuthenticationPrincipal aqui porque precisamos do objeto User completo.
+        logger.info("Tentando salvar produto. Título: {}", title);
+
         Optional<User> userOptional = userService.findByEmail(authentication.getName());
-        if (!userOptional.isPresent()) {
+        if (!userOptional.isPresent()) { // Compatível com Java 8
+            logger.warn("Usuário não autenticado tentou salvar produto: {}", authentication.getName());
             return "redirect:/login";
         }
 
@@ -71,6 +79,7 @@ public class ProductController {
         product.setDescription(description);
         product.setPrice(price);
         product.setUser(userOptional.get());
+        logger.info("Objeto Produto criado. Usuário: {}", userOptional.get().getEmail());
 
         if (imageFile != null && !imageFile.isEmpty()) {
             try {
@@ -89,15 +98,29 @@ public class ProductController {
                 Path filePath = uploadPath.resolve(newFileName);
                 Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
                 product.setImageUrl("/" + UPLOAD_DIR + "/" + newFileName);
+                logger.info("Imagem salva em: {}", product.getImageUrl());
 
             } catch (IOException e) {
-                redirectAttributes.addFlashAttribute("error", "Falha no upload da imagem.");
+                logger.error("Falha no upload da imagem para o produto: {}", title, e);
+                redirectAttributes.addFlashAttribute("error", "Falha no upload da imagem: " + e.getMessage());
                 return "redirect:/products/new";
             }
+        } else {
+            logger.warn("Nenhuma imagem fornecida para o produto: {}", title);
+            // Você pode querer definir uma imagem padrão aqui ou impedir o salvamento sem imagem
+            // product.setImageUrl("/img/placeholder.png"); // Exemplo
         }
 
-        productService.save(product);
-        redirectAttributes.addFlashAttribute("success", "Produto anunciado com sucesso!");
-        return "redirect:/user"; // Redireciona para a página do usuário após anunciar
+        try {
+            productService.save(product); // O ProductService agora tem o log do ID
+            redirectAttributes.addFlashAttribute("success", "Produto anunciado com sucesso!");
+        } catch (Exception e) {
+            logger.error("Erro ao salvar produto no banco de dados: {}. Erro: {}", title, e.getMessage(), e);
+            redirectAttributes.addFlashAttribute("error", "Erro ao salvar produto. Verifique os logs ou tente novamente.");
+            return "redirect:/products/new";
+        }
+        // Redireciona para a página /user para ver os produtos do usuário, como solicitado
+        // ou para /home se preferir ver a página principal.
+        return "redirect:/user";
     }
 }

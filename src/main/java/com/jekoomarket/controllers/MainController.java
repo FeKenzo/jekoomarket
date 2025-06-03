@@ -17,18 +17,20 @@ public class MainController {
     @GetMapping("/")
     public String home(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         model.addAttribute("products", productService.findLatest(5));
-
-        // Adiciona explicitamente o estado de login e o nome do usuário ao modelo
         model.addAttribute("isUserLoggedIn", currentUser != null);
+        boolean isAdmin = false;
         if (currentUser != null) {
             model.addAttribute("username", currentUser.getUsername());
+            isAdmin = currentUser.getAuthorities().stream()
+                    .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
         } else {
-            model.addAttribute("username", ""); // Garante que a variável exista
+            model.addAttribute("username", "");
         }
-
+        model.addAttribute("isAdmin", isAdmin);
         return "index";
     }
 
+    // adminPage continua o mesmo
     @GetMapping("/admin")
     public String adminPage() {
         return "admin";

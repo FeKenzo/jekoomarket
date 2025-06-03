@@ -17,17 +17,16 @@ public class HomeController {
     @GetMapping("/home")
     public String authenticatedHomePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         model.addAttribute("products", productService.findLatest(5));
-
-        // Adiciona explicitamente o estado de login e o nome do usuário ao modelo
-        // Para a página /home, currentUser nunca deve ser null se a segurança estiver correta.
         model.addAttribute("isUserLoggedIn", currentUser != null);
+        boolean isAdmin = false;
         if (currentUser != null) {
             model.addAttribute("username", currentUser.getUsername());
+            isAdmin = currentUser.getAuthorities().stream()
+                    .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
         } else {
-            // Isso não deveria acontecer em uma página protegida como /home
             model.addAttribute("username", "");
         }
-
+        model.addAttribute("isAdmin", isAdmin);
         return "home";
     }
 }

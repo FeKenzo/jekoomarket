@@ -2,24 +2,50 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Painel do Administrador</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="admin-panel">
-<header class="header">
-  <div class="container">
-    <h1>Administração de Usuários</h1>
-    <nav class="nav">
-      <a href="/logout" class="admin-button">Sair</a>
-    </nav>
-  </div>
-</header>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração de Usuários</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"> </head>
+<body class="admin-page-background">
 
-<main class="main">
-  <div class="container">
-    <section>
-      <h2>Lista de Usuários</h2>
-      <table class="user-table">
+<div th:replace="~{fragments/header :: mainHeader}"></div>
+
+<main class="container admin-container">
+  <header class="admin-header-section">
+    <h1>Gestão de Usuários</h1>
+    <a th:href="@{/admin}" class="btn btn-outline">← Voltar ao Painel Admin</a>
+  </header>
+
+  <div th:if="${success}" class="message success" th:text="${success}"></div>
+  <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+  <section class="admin-section">
+    <h2>Adicionar Novo Usuário</h2>
+    <form th:action="@{/admin/users/add}" method="post" class="form-stacked admin-form">
+      <div class="form-group">
+        <label for="add-email">Email:</label>
+        <input type="email" id="add-email" name="email" placeholder="email@exemplo.com" required>
+      </div>
+      <div class="form-group">
+        <label for="add-password">Senha:</label>
+        <input type="password" id="add-password" name="password" placeholder="Senha" required>
+      </div>
+      <div class="form-group">
+        <label for="add-role">Função:</label>
+        <select id="add-role" name="role">
+          <option value="USER">Usuário</option>
+          <option value="ADMIN">Administrador</option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn">Adicionar Usuário</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="admin-section">
+    <h2>Lista de Usuários Cadastrados</h2>
+    <div class="table-responsive">
+      <table class="admin-table">
         <thead>
         <tr>
           <th>ID</th>
@@ -30,34 +56,26 @@
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-          <td th:text="${user.id}"></td>
-          <td th:text="${user.email}"></td>
-          <td th:text="${user.role}"></td>
-          <td>
-            <a th:href="@{'/admin/users/edit/' + ${user.id}}">Editar</a> |
-            <a th:href="@{'/admin/users/delete/' + ${user.id}}" onclick="return confirm('Deseja excluir?')">Excluir</a>
+          <td data-label="ID" th:text="${user.id}"></td>
+          <td data-label="Email" th:text="${user.email}"></td>
+          <td data-label="Função" th:text="${user.role}"></td>
+          <td data-label="Ações" class="actions-cell">
+            <a th:href="@{'/admin/users/edit/' + ${user.id}}" class="btn-action edit">Editar</a>
+            <a th:if="${user.email != 'admin@jekoo.com'}"
+               th:href="@{'/admin/users/delete/' + ${user.id}}"
+               class="btn-action delete"
+               onclick="return confirm('Tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita.')">Excluir</a>
+            <span th:if="${user.email == 'admin@jekoo.com'}" class="text-muted">(Não pode ser excluído)</span>
           </td>
+        </tr>
+        <tr th:if="${users.isEmpty()}">
+          <td colspan="4" style="text-align:center;">Nenhum usuário encontrado.</td>
         </tr>
         </tbody>
       </table>
-
-      <h3 style="margin-top: 40px;">Adicionar Novo Usuário</h3>
-      <div th:if="${error}" class="error-message" th:text="${error}"></div>
-
-      <form th:action="@{/admin/users/add}" method="post" class="user-form">
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Senha" required>
-        <select name="role">
-          <option value="USER">Usuário</option>
-          <option value="ADMIN">Administrador</option>
-        </select>
-        <input type="submit" value="Adicionar">
-      </form>
-      <div style="margin-top: 30px;">
-        <a href="/admin" class="admin-button">← Voltar ao Painel Admin</a>
-      </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </main>
+
 </body>
 </html>

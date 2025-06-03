@@ -382,3 +382,222 @@ main {
     border-radius: 8px;
     margin-top: 2rem;
 }
+
+.admin-page-background {
+    background-color: #f0f4f8; /* Um cinza azulado claro para o fundo */
+}
+
+.admin-container {
+    background-color: transparent; /* O container principal pode ser transparente */
+    box-shadow: none;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.admin-header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dfe3e8;
+}
+
+.admin-header-section h1 {
+    color: #202938; /* Azul escuro */
+    font-size: 2rem;
+    text-align: left;
+}
+
+.admin-section {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2.5rem;
+}
+
+.admin-section h2 {
+    font-size: 1.5rem;
+    color: #334155; /* Azul acinzentado */
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+/* Formulários Admin */
+.admin-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.admin-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #475569; /* Cinza azulado */
+}
+
+.admin-form input[type="text"],
+.admin-form input[type="email"],
+.admin-form input[type="password"],
+.admin-form select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid #cbd5e1; /* Cinza claro */
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-form input:focus,
+.admin-form select:focus {
+    outline: none;
+    border-color: #2563eb; /* Azul primário para foco */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+.admin-form .form-text {
+    display: block;
+    font-size: 0.875rem;
+    color: #64748b; /* Cinza médio */
+    margin-top: 0.25rem;
+}
+.admin-form .text-danger {
+    color: #dc3545;
+}
+
+
+/* Tabelas Admin */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0; /* Linha separadora mais suave */
+}
+
+.admin-table thead th {
+    background-color: #f8fafc; /* Fundo da header da tabela bem claro */
+    color: #334155;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.admin-table tbody tr:hover {
+    background-color: #f1f5f9; /* Hover suave */
+}
+
+.admin-table .actions-cell {
+    white-space: nowrap;
+}
+
+.admin-table .btn-action {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+    margin-right: 0.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+}
+.admin-table .btn-action.edit {
+    background-color: #3b82f6; /* Azul */
+}
+.admin-table .btn-action.edit:hover {
+    background-color: #2563eb;
+}
+.admin-table .btn-action.delete {
+    background-color: #ef4444; /* Vermelho */
+}
+.admin-table .btn-action.delete:hover {
+    background-color: #dc2626;
+}
+.admin-table .text-muted {
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+
+/* Botão Outline (para voltar) */
+.btn-outline {
+    background-color: transparent;
+    color: #2563eb !important;
+    border: 1px solid #2563eb;
+}
+.btn-outline:hover {
+    background-color: #eff6ff; /* Azul bem claro */
+}
+
+/* Botão Admin Area no Header */
+.btn-admin-area {
+    background-color: #f59e0b; /* Laranja/Amarelo */
+    color: white !important;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 2rem;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    white-space: nowrap;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.btn-admin-area:hover {
+    background-color: #d97706;
+    transform: translateY(-2px);
+}
+
+/* Responsividade para tabelas em telas pequenas */
+@media screen and (max-width: 768px) {
+    .admin-table thead {
+        display: none; /* Esconde o cabeçalho da tabela */
+    }
+    .admin-table, .admin-table tbody, .admin-table tr, .admin-table td {
+        display: block;
+        width: 100%;
+    }
+    .admin-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+    }
+    .admin-table td {
+        text-align: right;
+        padding-left: 50%; /* Espaço para o "data-label" */
+        position: relative;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .admin-table td:last-child {
+        border-bottom: none;
+    }
+    .admin-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0.75rem;
+        width: calc(50% - 1.5rem); /* Largura do label */
+        padding-right: 0.75rem;
+        font-weight: 600;
+        text-align: left;
+        white-space: nowrap;
+    }
+    .admin-table .actions-cell {
+        text-align: center; /* Centraliza botões em telas pequenas */
+        padding-left: 0;
+    }
+    .admin-table .actions-cell::before {
+        display:none; /* Não precisa de label para ações */
+    }
+}
