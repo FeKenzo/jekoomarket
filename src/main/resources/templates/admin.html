@@ -4,9 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área de Administração - Jekoo Market</title>
+    <title>Painel Administrativo - Jekoo Market</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: #ffffff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 1.1rem;
+            color: #4A5568; /* Tailwind gray-700 */
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2e7d32; /* Green from your theme */
+            margin-bottom: 0.25rem;
+        }
+        .stat-card .stat-description {
+            font-size: 0.9rem;
+            color: #718096; /* Tailwind gray-600 */
+        }
+    </style>
 </head>
 
 <body class="admin-page-background">
@@ -18,8 +52,29 @@
         <h1>Painel Administrativo</h1>
     </header>
 
+    <section class="admin-section">
+        <h2>Visão Geral</h2>
+        <div class="dashboard-stats">
+            <div class="stat-card">
+                <h3>Total de Usuários</h3>
+                <p class="stat-number" th:text="${totalUsers}">0</p>
+                <p class="stat-description">Usuários cadastrados na plataforma.</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total de Produtos</h3>
+                <p class="stat-number" th:text="${totalProducts}">0</p>
+                <p class="stat-description">Produtos anunciados no Jekoo Market.</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total de Pedidos</h3>
+                <p class="stat-number" th:text="${totalOrders}">0</p>
+                <p class="stat-description">Pedidos realizados pelos clientes.</p>
+            </div>
+        </div>
+    </section>
+
     <section class="admin-section admin-dashboard">
-        <p>Bem-vindo(a) ao painel de administração do Jekoo Market.</p>
+        <h2>Ações Rápidas</h2>
         <p>Utilize os links abaixo para gerenciar as diferentes seções do sistema.</p>
 
         <nav class="admin-nav-buttons">
@@ -30,5 +85,4 @@
 </main>
 
 </body>
-
 </html>
