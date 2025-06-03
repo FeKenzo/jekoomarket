@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Conta - Jekoo Market</title>
+    <title th:text="|Resultados para '${query}'|"></title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
@@ -13,10 +13,7 @@
 <div th:replace="~{fragments/header :: mainHeader}"></div>
 
 <main class="container">
-    <h1 class="page-title">Meus Anúncios</h1>
-    <p class="page-subtitle">Gerencie os produtos que você anunciou.</p>
-
-    <div th:if="${success}" class="message success" th:text="${success}"></div>
+    <h1 class="page-title">Resultados da busca por: "<span th:text="${query}"></span>"</h1>
 
     <div class="product-grid" th:if="${products != null and !products.isEmpty()}">
         <div th:each="product : ${products}" class="product-card">
@@ -31,8 +28,7 @@
     </div>
 
     <div class="empty-state" th:if="${products == null or products.isEmpty()}">
-        <p>Você ainda não tem nenhum produto anunciado.</p>
-        <a th:href="@{/products/new}" class="btn">Anunciar meu primeiro produto</a>
+        <p>Nenhum produto encontrado com este termo de busca.</p>
     </div>
 </main>
 

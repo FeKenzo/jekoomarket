@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<header class="main-header" th:fragment="mainHeader">
+    <a th:href="@{/}" class="logo">Jekoo Market</a>
+
+    <div class="search-container">
+        <form th:action="@{/search}" method="get" class="search-form">
+            <input type="text" name="query" placeholder="Buscar produtos sustentáveis..." th:value="${query}" />
+            <button type="submit" class="search-button">Buscar</button>
+        </form>
+    </div>
+
+    <nav class="main-nav">
+        <div th:if="${isUserLoggedIn == null or !isUserLoggedIn}">
+            <a th:href="@{/login}" class="btn">Anuncie aqui</a>
+            <a th:href="@{/login}" class="btn-secondary">Login</a>
+        </div>
+
+        <div th:if="${isUserLoggedIn != null and isUserLoggedIn}" class="nav-logged-in">
+            <a th:href="@{/products/new}" class="btn">Anuncie aqui</a>
+            <a th:href="@{/user}" class="nav-greeting">Olá, <strong th:text="${username}"></strong>!</a>
+            <form th:action="@{/logout}" method="post" class="logout-form">
+                <button type="submit" class="btn-secondary">Sair</button>
+            </form>
+        </div>
+    </nav>
+</header>
+
+</body>
+</html>

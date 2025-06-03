@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jekoo Market | Bem-vindo</title>
+    <title>Jekoo Market | Home</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
@@ -19,8 +19,8 @@
                 <img th:src="@{${product.imageUrl != null ? product.imageUrl : '/img/placeholder.png'}}"
                      th:alt="${product.title}" />
                 <div class="carousel-caption">
-                    <h3 th:text="${product.title}">Título do Produto</h3>
-                    <p th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
+                    <h3 th:text="${product.title}"></h3>
+                    <p th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|"></p>
                 </div>
             </div>
         </div>
@@ -29,8 +29,8 @@
     </div>
 
     <div class="hero-section">
-        <h2>Produtos Sustentáveis ao seu alcance</h2>
-        <p>Compre e venda produtos recicláveis e sustentáveis em um só lugar.</p>
+        <h2>Bem-vindo(a) de volta!</h2>
+        <p>Explore novos produtos ou anuncie os seus.</p>
     </div>
 </main>
 

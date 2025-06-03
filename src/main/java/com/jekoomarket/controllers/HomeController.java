@@ -9,28 +9,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MainController {
+public class HomeController {
 
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/")
-    public String home(Model model, @AuthenticationPrincipal UserDetails currentUser) {
+    @GetMapping("/home")
+    public String authenticatedHomePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         model.addAttribute("products", productService.findLatest(5));
 
         // Adiciona explicitamente o estado de login e o nome do usuário ao modelo
+        // Para a página /home, currentUser nunca deve ser null se a segurança estiver correta.
         model.addAttribute("isUserLoggedIn", currentUser != null);
         if (currentUser != null) {
             model.addAttribute("username", currentUser.getUsername());
         } else {
-            model.addAttribute("username", ""); // Garante que a variável exista
+            // Isso não deveria acontecer em uma página protegida como /home
+            model.addAttribute("username", "");
         }
 
-        return "index";
-    }
-
-    @GetMapping("/admin")
-    public String adminPage() {
-        return "admin";
+        return "home";
     }
 }
