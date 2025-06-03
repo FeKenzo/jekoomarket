@@ -17,6 +17,8 @@
     <p>Preencha as informações abaixo para criar seu anúncio.</p>
 
     <div th:if="${error}" class="message error" th:text="${error}"></div>
+    <div th:if="${param.error}" class="message error" th:text="${param.error}"></div>
+
 
     <form th:action="@{/products/save}" method="post" enctype="multipart/form-data" class="announce-form">
         <div class="form-group">
@@ -37,11 +39,12 @@
             <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
         </div>
         <div class="form-actions">
-            <a th:href="@{/}" class="btn-secondary">Cancelar</a>
+            <a th:href="@{/user}" class="btn-secondary">Cancelar</a>
             <button type="submit" class="btn">Publicar Anúncio</button>
         </div>
     </form>
 </div>
 
 </body>
+
 </html>

@@ -39,18 +39,15 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions().disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Páginas públicas
                         .requestMatchers("/", "/login", "/register", "/search", "/css/**", "/js/**", "/product-images/**", "/h2-console/**").permitAll()
-                        // Páginas que exigem login
-                        .requestMatchers("/home", "/products/new", "/user").authenticated()
+                        .requestMatchers("/home", "/products/new", "/user", "/checkout/**").authenticated()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
-                        // MUDANÇA PRINCIPAL AQUI: Usando defaultSuccessUrl
-                        .defaultSuccessUrl("/home", true) // O 'true' força sempre ir para /home
+                        .defaultSuccessUrl("/home", true) // Sempre redireciona para /home
                         .permitAll()
                 )
                 .logout(logout -> logout

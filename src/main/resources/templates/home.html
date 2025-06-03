@@ -21,6 +21,7 @@
                 <div class="carousel-caption">
                     <h3 th:text="${product.title}"></h3>
                     <p th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|"></p>
+                    <a th:href="@{/checkout/start/{productId}(productId=${product.id})}" class="btn btn-carousel-buy">Comprar</a>
                 </div>
             </div>
         </div>

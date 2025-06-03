@@ -42,17 +42,10 @@ public class ProductController {
     public String showAnnounceForm(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         model.addAttribute("product", new Product());
 
-        // Adicionando atributos para o cabeçalho
-        model.addAttribute("isUserLoggedIn", currentUser != null);
-        boolean isAdmin = false;
-        if (currentUser != null) {
-            model.addAttribute("username", currentUser.getUsername());
-            // Verifica se o usuário tem a role ADMIN
-            isAdmin = currentUser.getAuthorities().stream()
-                    .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
-        } else {
-            model.addAttribute("username", "");
-        }
+        model.addAttribute("isUserLoggedIn", true); // Rota autenticada
+        model.addAttribute("username", currentUser.getUsername());
+        boolean isAdmin = currentUser.getAuthorities().stream()
+                .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
         model.addAttribute("isAdmin", isAdmin);
 
         return "announce-product";
@@ -69,7 +62,7 @@ public class ProductController {
         logger.info("Tentando salvar produto. Título: {}", title);
 
         Optional<User> userOptional = userService.findByEmail(authentication.getName());
-        if (!userOptional.isPresent()) { // Compatível com Java 8
+        if (!userOptional.isPresent()) {
             logger.warn("Usuário não autenticado tentou salvar produto: {}", authentication.getName());
             return "redirect:/login";
         }
@@ -107,20 +100,16 @@ public class ProductController {
             }
         } else {
             logger.warn("Nenhuma imagem fornecida para o produto: {}", title);
-            // Você pode querer definir uma imagem padrão aqui ou impedir o salvamento sem imagem
-            // product.setImageUrl("/img/placeholder.png"); // Exemplo
         }
 
         try {
-            productService.save(product); // O ProductService agora tem o log do ID
+            productService.save(product);
             redirectAttributes.addFlashAttribute("success", "Produto anunciado com sucesso!");
         } catch (Exception e) {
             logger.error("Erro ao salvar produto no banco de dados: {}. Erro: {}", title, e.getMessage(), e);
             redirectAttributes.addFlashAttribute("error", "Erro ao salvar produto. Verifique os logs ou tente novamente.");
             return "redirect:/products/new";
         }
-        // Redireciona para a página /user para ver os produtos do usuário, como solicitado
-        // ou para /home se preferir ver a página principal.
         return "redirect:/user";
     }
 }

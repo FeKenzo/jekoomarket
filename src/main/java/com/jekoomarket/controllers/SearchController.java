@@ -17,7 +17,7 @@ public class SearchController {
 
     @GetMapping("/search")
     public String searchProducts(@RequestParam(value = "query", required = false) String query, Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        if (query != null && !query.trim().isEmpty()) {
+        if (query != null && !query.trim().isEmpty()) { // Java 8 compatible
             model.addAttribute("products", productService.search(query));
         }
         model.addAttribute("query", query);

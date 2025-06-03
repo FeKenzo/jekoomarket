@@ -1,26 +1,143 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - JekooMarket</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body>
-<div class="container">
+
+<body class="form-page-background">
+<div class="form-container auth-form-container">
     <h2>Cadastre-se no JekooMarket</h2>
 
-    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+    <div th:if="${error}" class="message error" th:text="${error}"></div>
 
-    <form method="post" th:action="@{/register}" th:object="${user}">
-        <input type="email" th:field="*{email}" placeholder="Email" required>
-        <input type="password" th:field="*{password}" placeholder="Senha" required>
-        <button type="submit">Cadastrar</button>
+    <form method="post" th:action="@{/register}" th:object="${user}" class="auth-form">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" th:field="*{email}" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" th:field="*{password}" placeholder="Crie uma senha" required>
+        </div>
+
+        <fieldset class="address-group">
+            <legend>Endereço de Entrega</legend>
+            <div class="form-group">
+                <label for="cep">CEP</label>
+                <input type="text" id="cep" th:field="*{cep}" placeholder="00000-000" required>
+            </div>
+            <div class="form-group">
+                <label for="logradouro">Logradouro (Rua/Avenida)</label>
+                <input type="text" id="logradouro" th:field="*{logradouro}" placeholder="Preenchido automaticamente" readonly>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" th:field="*{numero}" placeholder="Ex: 123 A" required>
+                </div>
+                <div class="form-group">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" th:field="*{complemento}" placeholder="Apto, Bloco, etc.">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bairro">Bairro</label>
+                <input type="text" id="bairro" th:field="*{bairro}" placeholder="Preenchido automaticamente" readonly>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" th:field="*{cidade}" placeholder="Preenchido automaticamente" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado (UF)</label>
+                    <input type="text" id="estado" th:field="*{estado}" placeholder="Preenchido automaticamente" readonly
+                           maxlength="2">
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-full-width">Cadastrar</button>
+        </div>
     </form>
-    <div class="link">
+    <div class="auth-link">
         <p>Já possui conta? <a th:href="@{/login}">Entrar</a></p>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cepInput = document.getElementById('cep');
+        const logradouroInput = document.getElementById('logradouro');
+        const bairroInput = document.getElementById('bairro');
+        const cidadeInput = document.getElementById('cidade');
+        const estadoInput = document.getElementById('estado');
+        const numeroInput = document.getElementById('numero');
+
+        function limparCamposEndereco(makeEditable) {
+            logradouroInput.value = '';
+            bairroInput.value = '';
+            cidadeInput.value = '';
+            estadoInput.value = '';
+            if (makeEditable) {
+                logradouroInput.readOnly = false;
+                bairroInput.readOnly = false;
+                cidadeInput.readOnly = false;
+                estadoInput.readOnly = false;
+            } else {
+                logradouroInput.readOnly = true;
+                bairroInput.readOnly = true;
+                cidadeInput.readOnly = true;
+                estadoInput.readOnly = true;
+            }
+        }
+
+        if (cepInput) {
+            cepInput.addEventListener('blur', function () {
+                const cep = this.value.replace(/\D/g, '');
+
+                if (cep.length === 8) {
+                    limparCamposEndereco(false); // Limpa e torna readonly antes da consulta
+                    fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Falha na requisição ao ViaCEP: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.erro) {
+                                alert('CEP não encontrado. Por favor, insira os dados manualmente.');
+                                limparCamposEndereco(true); // Permite edição manual
+                            } else {
+                                logradouroInput.value = data.logradouro || '';
+                                bairroInput.value = data.bairro || '';
+                                cidadeInput.value = data.localidade || '';
+                                estadoInput.value = data.uf || '';
+                                numeroInput.focus();
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Erro ao buscar CEP:', error);
+                            alert('Não foi possível buscar o CEP. Por favor, insira os dados manualmente.');
+                            limparCamposEndereco(true); // Permite edição manual
+                        });
+                } else if (cep.length > 0 && cep.length < 8) {
+                    alert('CEP inválido. Deve conter 8 dígitos.');
+                    limparCamposEndereco(true);
+                } else {
+                    limparCamposEndereco(true); // Limpa se o CEP for apagado e permite edição
+                }
+            });
+        }
+    });
+</script>
 </body>
+
 </html>

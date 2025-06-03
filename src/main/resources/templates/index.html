@@ -19,8 +19,9 @@
                 <img th:src="@{${product.imageUrl != null ? product.imageUrl : '/img/placeholder.png'}}"
                      th:alt="${product.title}" />
                 <div class="carousel-caption">
-                    <h3 th:text="${product.title}">Título do Produto</h3>
-                    <p th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|">R$ 0,00</p>
+                    <h3 th:text="${product.title}"></h3>
+                    <p th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|"></p>
+                    <a th:href="@{/checkout/start/{productId}(productId=${product.id})}" class="btn btn-carousel-buy">Comprar</a>
                 </div>
             </div>
         </div>

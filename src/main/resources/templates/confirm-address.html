@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Detalhes - Jekoo Market</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="form-page-background">
+
+<div th:replace="~{fragments/header :: mainHeader}"></div>
+
+<div class="form-container">
+    <h1>Confirmar Detalhes da Compra</h1>
+
+    <div th:if="${product != null}" class="checkout-product-summary">
+        <h2>Produto: <span th:text="${product.title}"></span></h2>
+        <img th:if="${product.imageUrl}" th:src="@{${product.imageUrl}}" alt="Imagem do Produto"
+             class="checkout-product-image">
+        <p>Preço Unitário: <span
+                th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|"></span></p>
+    </div>
+    <hr class="divider">
+
+    <form th:action="@{/checkout/address}" method="post" class="announce-form">
+        <input type="hidden" name="productId" th:value="${product?.id}" />
+
+        <h2>Endereço de Entrega</h2>
+        <p>Por favor, confirme ou atualize seu endereço.</p>
+
+        <fieldset class="address-group">
+            <div class="form-group">
+                <label for="cep">CEP</label>
+                <input type="text" id="cep" name="cep" th:value="${userAddress?.cep}" required>
+            </div>
+            <div class="form-group">
+                <label for="logradouro">Logradouro</label>
+                <input type="text" id="logradouro" name="logradouro" th:value="${userAddress?.logradouro}" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="numero">Número</label>
+                    <input type="text" id="numero" name="numero" th:value="${userAddress?.numero}" required>
+                </div>
+                <div class="form-group">
+                    <label for="complemento">Complemento</label>
+                    <input type="text" id="complemento" name="complemento" th:value="${userAddress?.complemento}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bairro">Bairro</label>
+                <input type="text" id="bairro" name="bairro" th:value="${userAddress?.bairro}" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <input type="text" id="cidade" name="cidade" th:value="${userAddress?.cidade}" required>
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado (UF)</label>
+                    <input type="text" id="estado" name="estado" th:value="${userAddress?.estado}" maxlength="2" required>
+                </div>
+            </div>
+        </fieldset>
+
+        <hr class="divider">
+
+        <div class="form-group">
+            <label for="quantity">Quantidade</label>
+            <input type="number" id="quantity" name="quantity" th:value="${quantity ?: 1}" min="1" required
+                   class="quantity-input">
+        </div>
+
+        <div class="delivery-estimate">
+            <p><strong>Estimativa de Entrega:</strong> Em até 7 dias úteis.</p>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/}" class="btn-secondary">Cancelar Compra</a>
+            <button type="submit" class="btn">Continuar para Pagamento</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

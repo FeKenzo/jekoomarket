@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecionar Pagamento - Jekoo Market</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="form-page-background">
+
+<div th:replace="~{fragments/header :: mainHeader}"></div>
+
+<div class="form-container">
+    <h1>Selecionar Método de Pagamento</h1>
+
+    <div class="order-summary-box">
+        <h2>Resumo do Pedido</h2>
+        <div th:if="${product != null}"> <p class="order-summary-item"><strong>Produto:</strong> <span th:text="${product.title}"></span></p>
+            <p class="order-summary-item"><strong>Quantidade:</strong> <span th:text="${checkoutQuantity}"></span></p>
+            <p class="order-summary-item"><strong>Preço Unitário:</strong>
+                <span th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|"></span></p>
+            <p class="order-summary-item total"><strong>Total a Pagar:</strong>
+                <span th:text="|R$ ${#numbers.formatDecimal(totalAmount, 1, 'POINT', 2, 'COMMA')}|"></span></p>
+        </div>
+        <div th:if="${checkoutAddress != null}" class="address-summary">
+            <h3>Entregar em:</h3>
+            <p th:text="${checkoutAddress.logradouro} + ', ' + ${checkoutAddress.numero}"></p>
+            <p th:if="${checkoutAddress.complemento != null and !checkoutAddress.complemento.trim().isEmpty()}"
+               th:text="${checkoutAddress.complemento}"></p>
+            <p th:text="${checkoutAddress.bairro} + ' - ' + ${checkoutAddress.cidade} + '/' + ${checkoutAddress.estado}"></p>
+            <p th:text="'CEP: ' + ${checkoutAddress.cep}"></p>
+        </div>
+    </div>
+    <hr class="divider">
+
+    <form th:action="@{/checkout/place-order}" method="post" class="announce-form">
+        <h2>Escolha como pagar</h2>
+        <div class="payment-options form-group">
+            <label class="payment-option">
+                <input type="radio" name="paymentMethod" value="CartaoCredito" checked required> Cartão de Crédito
+            </label>
+            <label class="payment-option">
+                <input type="radio" name="paymentMethod" value="Boleto" required> Boleto Bancário
+            </label>
+            <label class="payment-option">
+                <input type="radio" name="paymentMethod" value="Pix" required> PIX
+            </label>
+        </div>
+
+        <div class="form-actions">
+            <a th:href="@{/checkout/start/{productId}(productId=${product.id})}" class="btn-secondary">Voltar</a>
+            <button type="submit" class="btn">Finalizar Pedido</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

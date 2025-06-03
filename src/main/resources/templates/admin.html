@@ -1,23 +1,34 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Área de Administração</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Administração - Jekoo Market</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-<div class="container">
-    <h1>Área de Administração</h1>
-    <p>Bem-vindo ao painel administrativo.</p>
 
-    <div style="margin-top: 30px;">
-        <a href="/admin/users" class="admin-button">Gerenciar Usuários</a>
-    </div>
+<body class="admin-page-background">
 
-    <div style="margin-top: 20px;">
-        <a href="/user" class="admin-button">Ir para Área do Usuário</a>
-    </div>
-</div>
+<div th:replace="~{fragments/header :: mainHeader}"></div>
+
+<main class="container admin-container">
+    <header class="admin-header-section">
+        <h1>Painel Administrativo</h1>
+    </header>
+
+    <section class="admin-section admin-dashboard">
+        <p>Bem-vindo(a) ao painel de administração do Jekoo Market.</p>
+        <p>Utilize os links abaixo para gerenciar as diferentes seções do sistema.</p>
+
+        <nav class="admin-nav-buttons">
+            <a th:href="@{/admin/users}" class="btn admin-nav-button">Gerenciar Usuários</a>
+            <a th:href="@{/home}" class="btn-secondary admin-nav-button">Voltar à Loja</a>
+        </nav>
+    </section>
+</main>
+
 </body>
+
 </html>

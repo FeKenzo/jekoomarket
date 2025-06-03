@@ -7,31 +7,40 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    line-height: 1.6;
 }
 
 main {
     flex-grow: 1;
+    padding-bottom: 3rem;
 }
 
 .container {
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 20px auto; /* Reduzida margem superior/inferior para .container geral */
     padding: 0 20px;
 }
 
 .page-title {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     color: #2e7d32;
     text-align: center;
     margin-bottom: 1rem;
+    font-weight: 700;
 }
 
 .page-subtitle {
     text-align: center;
     font-size: 1.1rem;
     color: #6c757d;
-    margin-top: -1rem;
-    margin-bottom: 3rem;
+    margin-top: -0.5rem;
+    margin-bottom: 2.5rem;
+}
+
+hr.divider {
+    border: 0;
+    border-top: 1px solid #e9ecef;
+    margin: 2rem 0;
 }
 
 /* HEADER */
@@ -42,7 +51,7 @@ main {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    gap: 1.5rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 
@@ -51,12 +60,13 @@ main {
     font-weight: 700;
     color: #2e7d32;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .search-container {
     flex-grow: 1;
-    max-width: 600px;
-    min-width: 300px;
+    max-width: 550px;
+    min-width: 280px;
 }
 
 .search-form {
@@ -72,11 +82,12 @@ main {
     border-right: none;
     border-radius: 2rem 0 0 2rem;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .search-form input:focus {
     border-color: #2e7d32;
+    box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25);
 }
 
 .search-button {
@@ -94,12 +105,11 @@ main {
     background-color: #1b5e20;
 }
 
-/* NAVEGAÇÃO DO HEADER */
 .main-nav,
 .nav-logged-in {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .logout-form {
@@ -111,14 +121,18 @@ main {
     text-decoration: none;
     color: #495057;
     white-space: nowrap;
+    padding: 0.7rem 0.5rem;
     transition: color 0.2s;
 }
+
 .nav-greeting:hover {
     color: #1b5e20;
 }
 
+.nav-greeting strong {
+    color: #2e7d32;
+}
 
-/* BOTÕES */
 .btn {
     display: inline-block;
     background-color: #28a745;
@@ -131,12 +145,18 @@ main {
     cursor: pointer;
     text-align: center;
     white-space: nowrap;
-    transition: background-color 0.2s, transform 0.2s;
+    transition: background-color 0.2s, transform 0.15s ease-out;
+    font-size: 0.95rem;
 }
 
 .btn:hover {
     background-color: #218838;
     transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn:active {
+    transform: translateY(0);
 }
 
 .btn-secondary {
@@ -147,14 +167,29 @@ main {
 
 .btn-secondary:hover {
     background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+.btn-admin-area {
+    background-color: #ffc107;
+    color: #212529 !important;
+}
+
+.btn-admin-area:hover {
+    background-color: #e0a800;
+}
+
+.btn-full-width {
+    width: 100%;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
 }
 
 /* CARROSSEL */
 .carousel-container {
     position: relative;
     width: 100%;
-    height: 50vh;
-    min-height: 400px;
+    height: clamp(350px, 60vh, 550px);
     margin: 0 auto 2rem auto;
     overflow: hidden;
 }
@@ -175,29 +210,42 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: brightness(0.7);
+    filter: brightness(0.65);
 }
 
 .carousel-caption {
     position: absolute;
     bottom: 10%;
     left: 5%;
+    right: 5%;
     color: white;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .carousel-caption h3 {
-    font-size: 2.5rem;
+    font-size: clamp(1.5rem, 4vw, 2.8rem);
     color: white;
-    margin: 0;
+    margin: 0 0 0.5rem 0;
     text-align: left;
+    font-weight: 700;
 }
 
 .carousel-caption p {
-    font-size: 1.5rem;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
     color: white;
-    margin: 0;
+    margin: 0 0 1rem 0;
     text-align: left;
+}
+
+.btn-carousel-buy {
+    background-color: #ffc107;
+    color: #212529 !important;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    padding: 0.6rem 1.2rem;
+}
+
+.btn-carousel-buy:hover {
+    background-color: #e0a800;
 }
 
 .carousel-control {
@@ -205,17 +253,18 @@ main {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 2.5rem;
-    height: 2.5rem;
-    line-height: 2.5rem;
+    width: 2.8rem;
+    height: 2.8rem;
+    line-height: 2.8rem;
     text-align: center;
     color: white;
     font-weight: bold;
     font-size: 1.5rem;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.25);
     border: none;
     border-radius: 50%;
     transition: background-color 0.2s;
+    z-index: 10;
 }
 
 .carousel-control:hover {
@@ -232,52 +281,59 @@ main {
 
 /* SEÇÃO HERO */
 .hero-section {
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
     text-align: center;
 }
 
 .hero-section h2 {
     font-size: 2rem;
+    margin-bottom: 0.75rem;
+    color: #2e7d32;
 }
 
 .hero-section p {
     font-size: 1.1rem;
     color: #6c757d;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* GRADE DE PRODUTOS */
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.75rem;
 }
 
 .product-card {
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
     overflow: hidden;
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
 .product-image {
     width: 100%;
-    height: 220px;
+    height: 200px;
     object-fit: cover;
 }
 
 .product-info {
     padding: 1rem;
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .product-title {
@@ -292,58 +348,93 @@ main {
     font-size: 1.2rem;
     font-weight: 700;
     color: #2e7d32;
-    margin: 0;
+    margin: 0 0 1rem 0;
     text-align: left;
 }
 
-/* FORMULÁRIO DE ANÚNCIO */
+.btn-card-buy {
+    margin-top: auto;
+}
+
+/* FORMULÁRIOS (Login, Register, Announce, Checkout, Admin) */
 .form-page-background {
     background-color: #e9ecef;
+    padding: 2rem 0; /* Adiciona padding ao body para não colar no header */
+    min-height: calc(100vh - 70px); /* 70px é uma altura aproximada do header */
+    display: flex;
+    flex-direction: column; /* Permite que o header e o form-container se alinhem verticalmente */
+}
+
+.form-page-background .main-header {
+    margin-bottom: 0; /* Remove margem do header quando nesta página */
 }
 
 .form-container {
     background: white;
-    padding: 2rem 3rem;
+    padding: 2rem 2.5rem;
     border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 600px;
-    margin: 40px auto;
+    max-width: 650px;
+    margin: 2rem auto; /* Centraliza e adiciona margem */
 }
 
 .form-container h1 {
     color: #2e7d32;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    font-size: 1.8rem;
 }
 
 .form-container p {
     color: #6c757d;
-}
-
-.announce-form .form-group {
+    text-align: center;
     margin-bottom: 1.5rem;
+    font-size: 1rem;
 }
 
-.announce-form label {
+.announce-form .form-group,
+.auth-form .form-group,
+.form-stacked .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.announce-form label,
+.auth-form label,
+.form-stacked label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
+    color: #495057;
 }
 
-.announce-form input,
-.announce-form textarea {
+.announce-form input[type="text"],
+.announce-form input[type="number"],
+.announce-form input[type="file"],
+.announce-form textarea,
+.auth-form input[type="email"],
+.auth-form input[type="password"],
+.form-stacked input[type="text"],
+.form-stacked input[type="email"],
+.form-stacked input[type="password"],
+.form-stacked select {
     width: 100%;
     padding: 0.8rem 1rem;
     box-sizing: border-box;
     border: 1px solid #ced4da;
     border-radius: 4px;
     font-size: 1rem;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .announce-form input:focus,
-.announce-form textarea:focus {
+.announce-form textarea:focus,
+.auth-form input:focus,
+.form-stacked input:focus,
+.form-stacked select:focus {
     outline: none;
     border-color: #28a745;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
 .announce-form input[type="file"] {
@@ -357,40 +448,235 @@ main {
     margin-top: 2rem;
 }
 
+.auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.auth-link a {
+    color: #28a745;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+.auth-form-container { /* Container específico para login/register */
+    max-width: 450px;
+}
+
+.address-group {
+    border: 1px solid #e0e0e0;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+}
+
+.address-group legend {
+    font-weight: 600;
+    color: #2e7d32;
+    padding: 0 0.5rem;
+    font-size: 1.2rem;
+    margin-bottom: 1rem; /* Espaço abaixo da legenda */
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+
+/* CHECKOUT */
+.checkout-product-summary {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.checkout-product-summary h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: #343a40;
+}
+
+.checkout-product-image {
+    max-width: 120px;
+    height: auto;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.quantity-input {
+    max-width: 100px;
+    text-align: center;
+}
+
+.delivery-estimate {
+    margin: 1.5rem 0;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.order-summary-box {
+    background-color: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #e9ecef;
+}
+
+.order-summary-box h2,
+.order-summary-box h3 {
+    margin-top: 0;
+    color: #2e7d32;
+}
+
+.order-summary-box h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px dashed #ced4da;
+    padding-bottom: 0.5rem;
+}
+
+.order-summary-item {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.order-summary-item.total {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ced4da;
+    color: #212529;
+}
+
+.address-summary p {
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+    color: #495057;
+}
+
+.payment-options label {
+    display: block;
+    margin-bottom: 0.75rem;
+    padding: 0.8rem 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.payment-options input[type="radio"] {
+    margin-right: 0.75rem;
+    vertical-align: middle;
+}
+
+.payment-options label:hover {
+    background-color: #e9ecef;
+}
+
+.payment-options input[type="radio"]:checked+span { /* Estiliza o texto ao lado do radio */
+    font-weight: 600;
+}
+.payment-options label.selected { /* Classe para JS, se precisar */
+    border-color: #28a745;
+    background-color: #e6f7e9;
+}
+
+
+/* PÁGINA DE SUCESSO DO PEDIDO */
+.success-page-content {
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem;
+    /* Adicione um SVG ou imagem de ícone de sucesso aqui */
+    /* Ex: background-image: url('/img/success-icon.svg'); background-size: contain; */
+}
+
+.success-page-content h1 {
+    font-size: 2rem;
+    color: #28a745;
+    margin-bottom: 1rem;
+}
+
+.success-page-content p {
+    font-size: 1.1rem;
+    color: #495057;
+    margin-bottom: 0.75rem;
+}
+
+.success-page-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 /* MENSAGENS E ESTADOS VAZIOS */
 .message {
     padding: 1rem;
     border-radius: 4px;
     margin: 0 auto 2rem auto;
     max-width: 1200px;
+    text-align: center;
+    border: 1px solid transparent; /* Borda base */
 }
+
 .message.success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border-color: #badbcc;
 }
+
 .message.error {
     background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    color: #842029;
+    border-color: #f5c2c7;
 }
 
 .empty-state {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 3rem 1rem;
     background-color: #fff;
     border-radius: 8px;
     margin-top: 2rem;
+    border: 1px dashed #ced4da;
+}
+.empty-state p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: #6c757d;
 }
 
+
+/* ESTILOS DAS PÁGINAS DE ADMIN */
 .admin-page-background {
-    background-color: #f0f4f8; /* Um cinza azulado claro para o fundo */
+    background-color: #f0f4f8;
 }
 
 .admin-container {
-    background-color: transparent; /* O container principal pode ser transparente */
+    background-color: transparent;
     box-shadow: none;
-    padding-top: 2rem;
+    padding-top: 1rem; /* Menor padding para admin containers */
     padding-bottom: 2rem;
 }
 
@@ -404,22 +690,23 @@ main {
 }
 
 .admin-header-section h1 {
-    color: #202938; /* Azul escuro */
-    font-size: 2rem;
+    color: #202938;
+    font-size: 1.8rem; /* Ligeiramente menor */
     text-align: left;
+    margin-bottom: 0;
 }
 
 .admin-section {
     background-color: #ffffff;
-    padding: 2rem;
+    padding: 1.5rem 2rem; /* Padding ajustado */
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .admin-section h2 {
-    font-size: 1.5rem;
-    color: #334155; /* Azul acinzentado */
+    font-size: 1.3rem; /* Ligeiramente menor */
+    color: #334155;
     margin-top: 0;
     margin-bottom: 1.5rem;
     padding-bottom: 0.75rem;
@@ -427,50 +714,17 @@ main {
     text-align: left;
 }
 
-/* Formulários Admin */
-.admin-form .form-group {
-    margin-bottom: 1.25rem;
-}
-
-.admin-form label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #475569; /* Cinza azulado */
-}
-
-.admin-form input[type="text"],
-.admin-form input[type="email"],
-.admin-form input[type="password"],
-.admin-form select {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 1px solid #cbd5e1; /* Cinza claro */
-    border-radius: 6px;
-    box-sizing: border-box;
-    transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.admin-form input:focus,
-.admin-form select:focus {
-    outline: none;
-    border-color: #2563eb; /* Azul primário para foco */
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-}
-
 .admin-form .form-text {
     display: block;
     font-size: 0.875rem;
-    color: #64748b; /* Cinza médio */
+    color: #64748b;
     margin-top: 0.25rem;
 }
+
 .admin-form .text-danger {
     color: #dc3545;
 }
 
-
-/* Tabelas Admin */
 .table-responsive {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -479,25 +733,25 @@ main {
 .admin-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Ligeiramente menor */
 }
 
 .admin-table th,
 .admin-table td {
-    padding: 0.85rem 1rem;
+    padding: 0.75rem 1rem; /* Padding ajustado */
     text-align: left;
-    border-bottom: 1px solid #e2e8f0; /* Linha separadora mais suave */
+    border-bottom: 1px solid #e2e8f0;
 }
 
 .admin-table thead th {
-    background-color: #f8fafc; /* Fundo da header da tabela bem claro */
+    background-color: #f8fafc;
     color: #334155;
     font-weight: 600;
     white-space: nowrap;
 }
 
 .admin-table tbody tr:hover {
-    background-color: #f1f5f9; /* Hover suave */
+    background-color: #f1f5f9;
 }
 
 .admin-table .actions-cell {
@@ -510,94 +764,147 @@ main {
     margin-right: 0.5rem;
     border-radius: 4px;
     text-decoration: none;
-    color: white;
+    color: white !important;
     display: inline-block;
-}
-.admin-table .btn-action.edit {
-    background-color: #3b82f6; /* Azul */
-}
-.admin-table .btn-action.edit:hover {
-    background-color: #2563eb;
-}
-.admin-table .btn-action.delete {
-    background-color: #ef4444; /* Vermelho */
-}
-.admin-table .btn-action.delete:hover {
-    background-color: #dc2626;
-}
-.admin-table .text-muted {
-    color: #64748b;
-    font-size: 0.875rem;
+    border: none;
 }
 
+.admin-table .btn-action.edit { background-color: #3b82f6; }
+.admin-table .btn-action.edit:hover { background-color: #2563eb; }
+.admin-table .btn-action.delete { background-color: #ef4444; }
+.admin-table .btn-action.delete:hover { background-color: #dc2626; }
+.admin-table .text-muted { color: #64748b; font-size: 0.875rem; }
 
-/* Botão Outline (para voltar) */
 .btn-outline {
     background-color: transparent;
     color: #2563eb !important;
     border: 1px solid #2563eb;
 }
-.btn-outline:hover {
-    background-color: #eff6ff; /* Azul bem claro */
-}
+.btn-outline:hover { background-color: #eff6ff; }
 
-/* Botão Admin Area no Header */
-.btn-admin-area {
-    background-color: #f59e0b; /* Laranja/Amarelo */
-    color: white !important;
-    padding: 0.7rem 1.5rem;
-    border: none;
-    border-radius: 2rem;
-    text-decoration: none;
-    font-weight: 600;
-    cursor: pointer;
+.admin-dashboard .admin-nav-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+.admin-nav-button {
     text-align: center;
-    white-space: nowrap;
-    transition: background-color 0.2s, transform 0.2s;
-}
-.btn-admin-area:hover {
-    background-color: #d97706;
-    transform: translateY(-2px);
 }
 
-/* Responsividade para tabelas em telas pequenas */
-@media screen and (max-width: 768px) {
-    .admin-table thead {
-        display: none; /* Esconde o cabeçalho da tabela */
+
+/* PÁGINAS DE ERRO */
+.error-page-background {
+    background-color: #e9ecef;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Alinha ao topo para o header */
+    min-height: 100vh;
+    padding-top: 0; /* O header já tem padding */
+}
+.error-page-background .main-header {
+    width: 100%; /* Garante que o header ocupe a largura */
+}
+.error-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 2rem 3rem;
+    margin: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: calc(100% - 4rem); /* Leva em conta a margem */
+}
+.error-container h1 {
+    font-size: 3rem; /* Ajustado */
+    color: #dc3545; /* Vermelho para erro */
+    margin-bottom: 0.5rem;
+}
+.error-container h2 {
+    font-size: 1.3rem; /* Ajustado */
+    color: #343a40;
+    margin-bottom: 1rem;
+}
+.error-container p {
+    font-size: 1rem; /* Ajustado */
+    color: #495057;
+    margin-bottom: 1.5rem;
+}
+.error-container .btn {
+    margin-top: 1rem;
+}
+
+
+/* Media Queries para Responsividade */
+@media screen and (max-width: 992px) { /* Breakpoint para tablet e header */
+    .main-header {
+        flex-direction: column;
+        padding: 1rem;
     }
-    .admin-table, .admin-table tbody, .admin-table tr, .admin-table td {
-        display: block;
+    .search-container {
+        order: 3;
         width: 100%;
+        margin: 0.75rem 0;
     }
-    .admin-table tr {
-        margin-bottom: 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 6px;
+    .main-nav {
+        order: 2;
+        width: 100%;
+        justify-content: center;
     }
-    .admin-table td {
-        text-align: right;
-        padding-left: 50%; /* Espaço para o "data-label" */
-        position: relative;
-        border-bottom: 1px solid #f1f5f9;
+    .logo {
+        order: 1;
+        align-self: center;
     }
-    .admin-table td:last-child {
-        border-bottom: none;
-    }
+    .carousel-caption h3 { font-size: 2rem; }
+    .carousel-caption p { font-size: 1.2rem; }
+}
+
+@media screen and (max-width: 768px) { /* Breakpoint para mobile */
+    .admin-table thead { display: none; }
+    .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
+    .admin-table tr { margin-bottom: 1rem; border: 1px solid #e2e8f0; border-radius: 6px; overflow:hidden; }
+    .admin-table td { text-align: right; padding-left: 45%; position: relative; border-bottom: 1px solid #f1f5f9; }
+    .admin-table td:last-child { border-bottom: none; }
     .admin-table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0.75rem;
-        width: calc(50% - 1.5rem); /* Largura do label */
-        padding-right: 0.75rem;
-        font-weight: 600;
-        text-align: left;
-        white-space: nowrap;
+        content: attr(data-label); position: absolute; left: 0.75rem;
+        width: calc(45% - 1.5rem); padding-right: 0.75rem;
+        font-weight: 600; text-align: left; white-space: nowrap;
+        color: #334155;
     }
-    .admin-table .actions-cell {
-        text-align: center; /* Centraliza botões em telas pequenas */
-        padding-left: 0;
+    .admin-table .actions-cell { text-align: center; padding-left: 0.75rem; } /* Ajustado */
+    .admin-table .actions-cell::before { display:none; }
+
+    .form-container { padding: 1.5rem; margin: 1rem; } /* Menos margem em mobile */
+    .main-header { padding: 0.75rem 1rem; }
+    .search-form input { padding: 0.6rem 0.8rem; }
+    .search-button { padding: 0 1rem; }
+    .btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+    .nav-greeting { display: none; } /* Esconde saudação para economizar espaço */
+    .admin-nav-buttons { grid-template-columns: 1fr; } /* Botões admin em uma coluna */
+
+    .form-row { flex-direction: column; gap: 0; } /* Empilha campos em formulários */
+    .form-row .form-group { margin-bottom: 1.25rem; }
+
+    .error-container { padding: 1.5rem; margin: 1rem; }
+    .error-container h1 { font-size: 2.5rem; }
+    .error-container h2 { font-size: 1.2rem; }
+}
+
+@media screen and (max-width: 480px) { /* Ajustes finos para telas muito pequenas */
+    .main-nav, .nav-logged-in { flex-direction: column; align-items: stretch; width: 100%; gap: 0.5rem;}
+    .main-nav .btn, .main-nav .btn-secondary,
+    .nav-logged-in .btn, .nav-logged-in .btn-secondary, .nav-logged-in .btn-admin-area {
+        width: 100%;
+        margin-bottom: 0.5rem;
     }
-    .admin-table .actions-cell::before {
-        display:none; /* Não precisa de label para ações */
-    }
+    .logout-form { width: 100%; }
+    .logout-form button { width: 100%; }
+
+    .carousel-caption h3 { font-size: 1.3rem; }
+    .carousel-caption p { font-size: 0.9rem; }
+    .btn-carousel-buy { font-size: 0.8rem; padding: 0.5rem 1rem; }
+    .page-title { font-size: 1.6rem; }
+    .form-actions { flex-direction: column; gap: 0.75rem; }
+    .form-actions .btn, .form-actions .btn-secondary { width: 100%; }
 }

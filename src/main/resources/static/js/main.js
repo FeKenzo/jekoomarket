@@ -1,14 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Seleciona os elementos do carrossel
     const slideContainer = document.querySelector('.carousel-slide');
     if (!slideContainer) {
-        // Se não houver carrossel na página, interrompe a execução do script
-        return;
+        return; // Sai se não houver carrossel na página
     }
 
-    const items = document.querySelectorAll('.carousel-item');
+    const items = slideContainer.querySelectorAll('.carousel-item');
+    const prevButton = document.querySelector('.carousel-control.prev');
+    const nextButton = document.querySelector('.carousel-control.next');
+
     if (items.length <= 1) {
-        // Se houver 1 ou 0 slides, não faz nada
+        // Esconde botões e para o script se houver 1 ou 0 slides
+        if (prevButton) prevButton.style.display = 'none';
+        if (nextButton) nextButton.style.display = 'none';
         return;
     }
 
@@ -16,55 +19,43 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentIndex = 0;
     let slideInterval;
 
-    /**
-     * Atualiza a posição do slide com base no índice atual.
-     */
     function updateCarousel() {
-        const offset = -currentIndex * 100; // Deslocamento em porcentagem
+        const offset = -currentIndex * 100;
         slideContainer.style.transform = `translateX(${offset}%)`;
     }
 
-    /**
-     * Move para um slide específico.
-     * @param {number} index - O índice do slide para o qual mover.
-     */
     function showSlide(index) {
-        // Garante que o índice esteja dentro dos limites (0 a totalItems-1)
         currentIndex = (index + totalItems) % totalItems;
         updateCarousel();
     }
 
-    /**
-     * Move para o slide seguinte ou anterior.
-     * Esta função é exposta globalmente para ser chamada pelos botões no HTML.
-     * @param {number} direction - A direção para mover (-1 para anterior, 1 para próximo).
-     */
+    // Expõe a função globalmente para os botões HTML
     window.moveSlide = function (direction) {
         showSlide(currentIndex + direction);
+        // Reinicia o intervalo para não mudar imediatamente após um clique manual
+        clearInterval(slideInterval);
+        startSlideShow();
     };
 
-    /**
-     * Inicia a transição automática de slides.
-     */
     function startSlideShow() {
-        // Limpa qualquer intervalo anterior para evitar múltiplos timers
-        clearInterval(slideInterval);
+        clearInterval(slideInterval); // Garante que não haja múltiplos intervalos
         slideInterval = setInterval(() => {
             showSlide(currentIndex + 1);
         }, 5000); // Muda a cada 5 segundos
     }
 
-    // Para a transição quando o mouse está sobre o carrossel
-    const carouselContainer = document.querySelector('.carousel-container');
-    carouselContainer.addEventListener('mouseenter', () => {
-        clearInterval(slideInterval);
-    });
+    const carouselContainerElement = document.querySelector('.carousel-container');
+    if (carouselContainerElement) {
+        carouselContainerElement.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
 
-    // Recomeça a transição quando o mouse sai
-    carouselContainer.addEventListener('mouseleave', () => {
-        startSlideShow();
-    });
+        carouselContainerElement.addEventListener('mouseleave', () => {
+            startSlideShow();
+        });
+    }
 
-    // Inicia o show de slides assim que a página carrega
+    // Garante que o primeiro slide seja exibido corretamente ao carregar
+    updateCarousel();
     startSlideShow();
 });

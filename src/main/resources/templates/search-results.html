@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="|Resultados para '${query}'|"></title>
+    <title th:text="|Resultados para '${query}' - Jekoo Market|"></title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
@@ -23,6 +23,7 @@
                 <h3 class="product-title" th:text="${product.title}"></h3>
                 <p class="product-price"
                    th:text="|R$ ${#numbers.formatDecimal(product.price, 1, 'POINT', 2, 'COMMA')}|"></p>
+                <a th:href="@{/checkout/start/{productId}(productId=${product.id})}" class="btn btn-card-buy">Comprar</a>
             </div>
         </div>
     </div>

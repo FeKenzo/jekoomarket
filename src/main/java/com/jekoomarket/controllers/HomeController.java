@@ -17,16 +17,14 @@ public class HomeController {
     @GetMapping("/home")
     public String authenticatedHomePage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
         model.addAttribute("products", productService.findLatest(5));
-        model.addAttribute("isUserLoggedIn", currentUser != null);
-        boolean isAdmin = false;
-        if (currentUser != null) {
-            model.addAttribute("username", currentUser.getUsername());
-            isAdmin = currentUser.getAuthorities().stream()
-                    .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
-        } else {
-            model.addAttribute("username", "");
-        }
+
+        // Como esta rota é autenticada, currentUser não deve ser null.
+        model.addAttribute("isUserLoggedIn", true);
+        model.addAttribute("username", currentUser.getUsername());
+        boolean isAdmin = currentUser.getAuthorities().stream()
+                .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
         model.addAttribute("isAdmin", isAdmin);
+
         return "home";
     }
 }

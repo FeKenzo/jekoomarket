@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Realizado - Jekoo Market</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: mainHeader}"></div>
+
+<main class="container">
+    <div class="success-page-content">
+        <img th:src="@{/img/success-icon.png}" alt="Sucesso" class="success-icon" /> <h1>Pedido Realizado com Sucesso!</h1>
+        <p th:if="${successMessage}" th:text="${successMessage}"></p>
+        <p>Obrigado por comprar no Jekoo Market. Você receberá um e-mail com os detalhes do seu pedido em breve.</p>
+        <p>Sua entrega está estimada para chegar em até 7 dias úteis.</p>
+        <div class="success-page-actions">
+            <a th:href="@{/home}" class="btn">Continuar Comprando</a>
+            <a th:href="@{/user}" class="btn-secondary">Ver Meus Pedidos</a> </div>
+    </div>
+</main>
+
+</body>
+</html>

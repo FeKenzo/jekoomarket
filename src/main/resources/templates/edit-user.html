@@ -1,36 +1,68 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Editar Usuário</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuário - Jekoo Market</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
-<div class="container">
-    <h1>Editar Usuário</h1>
-    <div th:if="${error}" class="error-message" th:text="${error}"></div>
 
-    <form th:action="@{/admin/users/update}" th:object="${user}" method="post" class="user-form">
-        <input type="hidden" th:field="*{id}" />
+<body class="admin-page-background">
 
-        <label>Email:</label>
-        <input type="email" th:field="*{email}" required />
+<div th:replace="~{fragments/header :: mainHeader}"></div>
 
-        <label>Senha (deixe em branco para manter a atual):</label>
-        <input type="password" name="password" placeholder="Nova senha (opcional)" />
+<main class="container admin-container">
+    <header class="admin-header-section">
+        <h1>Editar Usuário</h1>
+    </header>
 
-        <label>Função:</label>
-        <select th:field="*{role}">
-            <option value="USER">Usuário</option>
-            <option value="ADMIN">Administrador</option>
-        </select>
-
-        <input type="submit" value="Salvar Alterações" />
-    </form>
-
-    <div style="margin-top: 20px;">
-        <a href="/admin/users" class="admin-button">← Voltar</a>
+    <div th:if="${user == null}" class="admin-section">
+        <p class="message error">Usuário não encontrado.</p>
+        <a th:href="@{/admin/users}" class="btn btn-outline">Voltar para Lista de Usuários</a>
     </div>
-</div>
+
+    <div th:if="${user != null}" class="admin-section">
+        <div th:if="${error}" class="message error" th:text="${error}"></div>
+
+        <form th:action="@{/admin/users/update}" th:object="${user}" method="post" class="form-stacked admin-form">
+            <input type="hidden" th:field="*{id}" />
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" th:field="*{email}" required
+                       th:attr="readonly=${user.email == 'admin@jekoo.com' ? 'readonly' : null}" />
+                <small th:if="${user.email == 'admin@jekoo.com'}" class="form-text text-danger">
+                    O e-mail do administrador principal (admin@jekoo.com) não pode ser alterado.
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Nova Senha:</label>
+                <input type="password" id="password" name="password" placeholder="Deixe em branco para manter a atual" />
+                <small class="form-text">Preencha este campo apenas se desejar alterar a senha.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Função:</label>
+                <select id="role" th:field="*{role}"
+                        th:attr="disabled=${user.email == 'admin@jekoo.com' ? 'disabled' : null}">
+                    <option value="USER">Usuário</option>
+                    <option value="ADMIN">Administrador</option>
+                </select>
+                <small th:if="${user.email == 'admin@jekoo.com'}" class="form-text text-danger">
+                    A função do administrador principal (admin@jekoo.com) não pode ser alterada.
+                </small>
+            </div>
+
+            <div class="form-actions">
+                <a th:href="@{/admin/users}" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</main>
+
 </body>
+
 </html>

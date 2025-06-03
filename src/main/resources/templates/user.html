@@ -17,6 +17,7 @@
     <p class="page-subtitle">Gerencie os produtos que você anunciou.</p>
 
     <div th:if="${success}" class="message success" th:text="${success}"></div>
+    <div th:if="${param.success}" class="message success" th:text="${param.success}"></div>
 
     <div class="product-grid" th:if="${products != null and !products.isEmpty()}">
         <div th:each="product : ${products}" class="product-card">

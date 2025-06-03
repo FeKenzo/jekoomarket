@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - JekooMarket</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
-<div class="container">
+
+<body class="form-page-background">
+<div class="form-container auth-form-container">
     <h2>Entrar no JekooMarket</h2>
 
     <div th:if="${param.error}" class="message error">
@@ -17,16 +19,30 @@
     <div th:if="${param.logout}" class="message success">
         Você saiu com sucesso.
     </div>
+    <div th:if="${param.registrationSuccess}" class="message success">
+        Cadastro realizado com sucesso! Faça o login.
+    </div>
+    <div th:if="${registrationSuccess}" class="message success" th:text="${registrationSuccess}"></div>
 
-    <form method="post" th:action="@{/login}">
-        <input type="email" name="username" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Senha" required>
-        <button type="submit">Entrar</button>
+
+    <form method="post" th:action="@{/login}" class="auth-form">
+        <div class="form-group">
+            <label for="username">Email</label>
+            <input type="email" id="username" name="username" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" placeholder="Sua senha" required>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-full-width">Entrar</button>
+        </div>
     </form>
 
-    <div class="link">
+    <div class="auth-link">
         <p>Não tem uma conta? <a th:href="@{/register}">Cadastre-se</a></p>
     </div>
 </div>
 </body>
+
 </html>

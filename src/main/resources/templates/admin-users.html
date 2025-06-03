@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Administração de Usuários</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}"> </head>
+  <title>Administração de Usuários - Jekoo Market</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
 <body class="admin-page-background">
 
 <div th:replace="~{fragments/header :: mainHeader}"></div>
@@ -12,7 +15,7 @@
 <main class="container admin-container">
   <header class="admin-header-section">
     <h1>Gestão de Usuários</h1>
-    <a th:href="@{/admin}" class="btn btn-outline">← Voltar ao Painel Admin</a>
+    <a th:href="@{/admin}" class="btn btn-outline">← Voltar ao Painel</a>
   </header>
 
   <div th:if="${success}" class="message success" th:text="${success}"></div>
@@ -65,10 +68,10 @@
                th:href="@{'/admin/users/delete/' + ${user.id}}"
                class="btn-action delete"
                onclick="return confirm('Tem certeza que deseja excluir este usuário? Esta ação não pode ser desfeita.')">Excluir</a>
-            <span th:if="${user.email == 'admin@jekoo.com'}" class="text-muted">(Não pode ser excluído)</span>
+            <span th:if="${user.email == 'admin@jekoo.com'}" class="text-muted">(Admin Principal)</span>
           </td>
         </tr>
-        <tr th:if="${users.isEmpty()}">
+        <tr th:if="${users == null or users.isEmpty()}">
           <td colspan="4" style="text-align:center;">Nenhum usuário encontrado.</td>
         </tr>
         </tbody>
@@ -78,4 +81,5 @@
 </main>
 
 </body>
+
 </html>

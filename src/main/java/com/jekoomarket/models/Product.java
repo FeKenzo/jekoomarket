@@ -9,6 +9,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
     private Double price;
@@ -18,7 +19,8 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User user;
 
-    // Getters and Setters
+    public Product() {}
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getTitle() { return title; }
@@ -31,6 +33,4 @@ public class Product {
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-
-
 }

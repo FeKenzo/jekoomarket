@@ -1,15 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8" />
-    <title>Erro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro Inesperado</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
-<body class="error-page">
-<div class="container">
-    <h1>Ocorreu um erro</h1>
-    <p>Desculpe, algo deu errado. Por favor, tente novamente mais tarde.</p>
-    <a th:href="@{/}" class="btn">Voltar à página inicial</a>
+
+<body class="error-page-background">
+
+<div th:replace="~{fragments/header :: mainHeader}"></div>
+
+<div class="error-container">
+    <h1>Ops! Algo deu errado.</h1>
+    <h2>Ocorreu um Erro Inesperado</h2>
+    <p>Pedimos desculpas pelo inconveniente. Nossa equipe já foi notificada (se houver sistema de log de erros implementado).</p>
+    <p>Por favor, tente novamente mais tarde ou retorne à página inicial.</p>
+    <a th:href="@{/}" class="btn">Voltar à Página Inicial</a>
 </div>
+
 </body>
+
 </html>
