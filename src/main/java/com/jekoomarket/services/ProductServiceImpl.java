@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional; // Adicionado para findById
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -41,7 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> search(String query) {
-        if (query == null || query.trim().isEmpty()) { // Java 8 compatible
+        if (query == null || query.trim().isEmpty()) { 
             return Collections.emptyList();
         }
         return productRepository.findByTitleContainingIgnoreCase(query);
@@ -54,8 +54,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findById(Long id) { // Adicionado
+    public Optional<Product> findById(Long id) { 
         logger.info("Serviço: Buscando produto com ID: {}", id);
         return productRepository.findById(id);
+    }
+
+    @Override
+    public long countAllProducts() { // Implementation of new method
+        return productRepository.count();
     }
 }
