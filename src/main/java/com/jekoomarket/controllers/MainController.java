@@ -31,20 +31,7 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/admin")
-    public String adminPage(Model model, @AuthenticationPrincipal UserDetails currentUser) {
-        // Para o cabeçalho na página de admin
-        model.addAttribute("isUserLoggedIn", currentUser != null);
-        boolean isAdminRole = false;
-        if (currentUser != null) {
-            model.addAttribute("username", currentUser.getUsername());
-            isAdminRole = currentUser.getAuthorities().stream()
-                    .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
-        } else {
-            // Não deveria chegar aqui se /admin é protegido, mas por segurança
-            model.addAttribute("username", "");
-        }
-        model.addAttribute("isAdmin", isAdminRole);
-        return "admin";
-    }
+    // Removed adminPage method that was previously here:
+    // @GetMapping("/admin")
+    // public String adminPage(...) { ... }
 }
