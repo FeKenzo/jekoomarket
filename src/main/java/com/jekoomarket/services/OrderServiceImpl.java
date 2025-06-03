@@ -25,16 +25,15 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepository productRepository; // Keep this if needed elsewhere or remove if not.
 
     @Override
     @Transactional
     public Order placeOrder(User user, Product productToBuy, int quantity, Map<String, String> deliveryAddress, String paymentMethod) {
         logger.info("Iniciando processo de criação de pedido para o usuário: {} e produto: {}", user.getEmail(), productToBuy.getTitle());
 
-        // Re-buscar a entidade product para garantir que está gerenciada e dados frescos
         Optional<Product> productOptional = productRepository.findById(productToBuy.getId());
-        if (!productOptional.isPresent()) { // Java 8 compatible
+        if (!productOptional.isPresent()) { 
             logger.error("Produto com ID {} não encontrado ao tentar criar pedido.", productToBuy.getId());
             throw new RuntimeException("Produto não encontrado com ID: " + productToBuy.getId());
         }
@@ -69,5 +68,10 @@ public class OrderServiceImpl implements OrderService {
         Order savedOrder = orderRepository.save(order);
         logger.info("Pedido criado com sucesso. ID do Pedido: {}", savedOrder.getId());
         return savedOrder;
+    }
+
+    @Override
+    public long countAllOrders() { // Implementation of new method
+        return orderRepository.count();
     }
 }
