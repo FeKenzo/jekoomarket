@@ -16,6 +16,10 @@
     <h1 class="page-title">Meus Anúncios</h1>
     <p class="page-subtitle">Gerencie os produtos que você anunciou.</p>
 
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <a th:href="@{/user/orders}" class="btn-secondary">Ver Meus Pedidos</a>
+    </div>
+
     <div th:if="${success}" class="message success" th:text="${success}"></div>
     <div th:if="${param.success}" class="message success" th:text="${param.success}"></div>
 
@@ -38,5 +42,4 @@
 </main>
 
 </body>
-
 </html>
