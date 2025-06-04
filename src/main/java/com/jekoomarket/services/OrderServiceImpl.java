@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ public class OrderServiceImpl implements OrderService {
         logger.info("Iniciando processo de criação de pedido para o usuário: {} e produto: {}", user.getEmail(), productToBuy.getTitle());
 
         Optional<Product> productOptional = productRepository.findById(productToBuy.getId());
-        if (!productOptional.isPresent()) { 
+        if (!productOptional.isPresent()) {
             logger.error("Produto com ID {} não encontrado ao tentar criar pedido.", productToBuy.getId());
             throw new RuntimeException("Produto não encontrado com ID: " + productToBuy.getId());
         }
@@ -73,5 +74,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public long countAllOrders() { // Implementation of new method
         return orderRepository.count();
+    }
+
+    @Override
+    public List<Order> findByUser(User user) {
+        logger.info("Buscando pedidos para o usuário: {}", user.getEmail());
+        return orderRepository.findByUserId(user.getId());
     }
 }
