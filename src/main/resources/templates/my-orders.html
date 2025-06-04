@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Pedidos - Jekoo Market</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .order-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .order-header h3 { margin: 0; font-size: 1.2rem; color: #334155; }
+        .order-header span { font-size: 0.9rem; color: #64748b; }
+        .order-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .order-item img { width: 80px; height: 80px; object-fit: cover; border-radius: 4px; }
+        .order-item-details { flex-grow: 1; }
+        .order-item-details p { margin: 0.25rem 0; }
+        .order-footer { text-align: right; font-weight: bold; font-size: 1.1rem; }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: mainHeader}"></div>
+
+<main class="container">
+    <h1 class="page-title">Meus Pedidos</h1>
+    <p class="page-subtitle">Acompanhe o histórico de suas compras.</p>
+
+    <div style="margin-bottom: 2rem; text-align: center;">
+        <a th:href="@{/user}" class="btn-secondary">Ver Meus Anúncios</a>
+    </div>
+
+    <div th:if="${orders != null and !orders.isEmpty()}">
+        <div th:each="order : ${orders}" class="order-card">
+            <div class="order-header">
+                <h3>Pedido #<span th:text="${order.id}"></span></h3>
+                <span>Realizado em: <span th:text="${#temporals.format(order.orderDate, 'dd/MM/yyyy')}"></span></span>
+            </div>
+
+            <div th:each="item : ${order.orderItems}" class="order-item">
+                <img th:src="@{${item.product.imageUrl != null ? item.product.imageUrl : '/img/placeholder.png'}}"
+                     alt="Imagem do Produto" />
+                <div class="order-item-details">
+                    <p><strong>Produto:</strong> <span th:text="${item.product.title}"></span></p>
+                    <p><strong>Quantidade:</strong> <span th:text="${item.quantity}"></span></p>
+                    <p><strong>Preço (na compra):</strong> <span th:text="|R$ ${#numbers.formatDecimal(item.priceAtPurchase, 1, 'POINT', 2, 'COMMA')}|"></span></p>
+                </div>
+            </div>
+
+            <div class="order-footer">
+                Total: <span th:text="|R$ ${#numbers.formatDecimal(order.totalAmount, 1, 'POINT', 2, 'COMMA')}|"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" th:if="${orders == null or orders.isEmpty()}">
+        <p>Você ainda não fez nenhum pedido.</p>
+        <a th:href="@{/}" class="btn">Começar a Comprar</a>
+    </div>
+</main>
+
+</body>
+</html>
