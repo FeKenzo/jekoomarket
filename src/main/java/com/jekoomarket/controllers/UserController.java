@@ -1,6 +1,8 @@
 package com.jekoomarket.controllers;
 
+import com.jekoomarket.models.Order;
 import com.jekoomarket.models.User;
+import com.jekoomarket.services.OrderService;
 import com.jekoomarket.services.ProductService;
 import com.jekoomarket.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -22,11 +25,13 @@ public class UserController {
 
     private final UserService userService;
     private final ProductService productService;
+    private final OrderService orderService;
 
     @Autowired
-    public UserController(UserService userService, ProductService productService) {
+    public UserController(UserService userService, ProductService productService, OrderService orderService) {
         this.userService = userService;
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/register")
@@ -85,5 +90,30 @@ public class UserController {
         model.addAttribute("isAdmin", isAdminRole);
 
         return "user";
+    }
+
+    @GetMapping("/user/orders")
+    public String userOrders(Model model, @AuthenticationPrincipal UserDetails currentUser) {
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+
+        Optional<User> userOptional = userService.findByEmail(currentUser.getUsername());
+        if (!userOptional.isPresent()) {
+            return "redirect:/login?error=user_not_found";
+        }
+
+        User user = userOptional.get();
+        List<Order> orders = orderService.findByUser(user);
+        model.addAttribute("orders", orders);
+
+        // Atributos para o header
+        model.addAttribute("isUserLoggedIn", true);
+        model.addAttribute("username", currentUser.getUsername());
+        boolean isAdminRole = currentUser.getAuthorities().stream()
+                .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
+        model.addAttribute("isAdmin", isAdminRole);
+
+        return "my-orders"; // → renderiza o novo arquivo templates/my-orders.html
     }
 }
